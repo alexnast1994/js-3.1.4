@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(schema = "db_pred_prod, name = roles")
+@Table(schema = "db_pred_prod", name = "roles")
 public class Role implements GrantedAuthority {
 
     @Id
@@ -17,7 +17,7 @@ public class Role implements GrantedAuthority {
     private Long id;
 
     @Fetch(FetchMode.JOIN)
-    @ManyToMany
+    @ManyToMany(mappedBy = "roles")
     private Set<User> users = new HashSet<>();
 
     private String role;

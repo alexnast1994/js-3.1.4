@@ -42,4 +42,15 @@ public class UserServiceImpl implements UserService {
         userDao.updateUser(user);
     }
 
+    @Override
+    public User getUserByUserName(String userName) {
+        return userDao.getUserByUserName(userName);
+    }
+
+    @Override
+    public void dropPassword(User user) {
+        user.setPassword(null);
+    }
+
+
 }
