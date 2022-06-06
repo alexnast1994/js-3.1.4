@@ -1,5 +1,6 @@
 package ru.kata.spring.boot_security.demo.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
@@ -33,27 +34,32 @@ public class User implements Serializable, UserDetails {
 
     private String userName;
 
+    private String role;
+
     @Fetch(FetchMode.JOIN)
     @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "user_role",
-            joinColumns = {@JoinColumn(name = "user_id")},
-            inverseJoinColumns = {@JoinColumn(name = "role_id")})
+            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
+    @JsonIgnore
     private Set<Role> roles = new HashSet<>();
 
     public User() {
     }
 
-    public User(Long id, String password, String userName, Set<Role> roles) {
+    public User(Long id, String password, String userName, Set<Role> roles, String role) {
         this.id = id;
         this.password = password;
         this.userName = userName;
         this.roles = roles;
+        this.role = role;
     }
 
-    public User(String firstName, String lastName, String email) {
+    public User(String firstName, String lastName, String email,String role) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.role = role;
     }
 
     public Long getId() {
@@ -163,6 +169,14 @@ public class User implements Serializable, UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }
 
