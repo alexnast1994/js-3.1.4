@@ -1,16 +1,18 @@
 package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
-@Controller
+import java.util.List;
+import java.util.Set;
+
+@RestController
 @ComponentScan("/src/main/resources/templates")
 public class AdminController {
     private final UserService userService;
@@ -20,32 +22,29 @@ public class AdminController {
     }
 
     @PostMapping("/saveUser")
-    public String saveUser(@ModelAttribute("user") User user) {
+    public void saveUser(@RequestBody User user) {
         userService.add(user);
-        return "redirect:/main";
     }
 
-    @PostMapping("/updateUser")
-    public String updateUser(@ModelAttribute("user") User user) {
+    @PutMapping ("/updateUser")
+    public void updateUser(@RequestBody User user) {
         userService.updateUser(user);
-        return "redirect:/main";
     }
 
-    @GetMapping("/deleteUser")
-    public String deleteUser(@ModelAttribute("user") User user) {
-        userService.removeUserById(user.getId());
-        return "redirect:/main";
+    @DeleteMapping("/deleteUser")
+    public void deleteUser(@PathVariable Long id) {
+        userService.removeUserById(id);
     }
 
     @GetMapping(value = "/main")
-    public String showUser(ModelMap model) {
-        model.addAttribute("users", userService.getAllUsers());
-        return "main";
+    public ResponseEntity<List<User>> showUser() {
+        return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
 
-    @GetMapping("/edit")
-    @ResponseBody
-    public User findOne(Long id) {
-        return userService.getUserById(id);
+
+
+    @GetMapping("/getUser")
+    public ResponseEntity<User> findOne(@PathVariable Long id) {
+        return new ResponseEntity<>(userService.getUserById(id), HttpStatus.OK);
     }
 }
