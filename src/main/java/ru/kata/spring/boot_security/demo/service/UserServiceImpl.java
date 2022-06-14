@@ -48,6 +48,11 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void updateUser(User user) {
+        if (user.getRole().contains("ROLE_USER") && !user.getRole().contains("ROLE_ADMIN")) {
+            user.setRoles(Collections.singleton(new Role(2L, "ROLE_USER")));
+        } else {
+            user.setRoles(Collections.singleton(new Role(1L, "ROLE_ADMIN")));
+        }
         userDao.updateUser(user);
     }
 
