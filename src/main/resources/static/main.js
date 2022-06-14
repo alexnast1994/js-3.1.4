@@ -5,7 +5,7 @@ function getAllUsers() {
     $("#table").empty();
     $.ajax({
         type: 'GET',
-        url: '/main',
+        url: '/users',
         timeout: 3000,
         success: function (data) {
             console.log(data);
@@ -14,6 +14,7 @@ function getAllUsers() {
                         $('<td>').append($('<span>')).text(user.id),
                         $('<td>').append($('<span>')).text(user.firstName),
                         $('<td>').append($('<span>')).text(user.lastName),
+                        $('<td>').append($('<span>')).text(user.userName),
                         $('<td>').append($('<span>')).text(user.email),
                         $('<td>').append($('<span>')).text(user.role),
                         $('<td>').append($('<button>').text("Edit").attr({
@@ -43,8 +44,9 @@ $(document).on("click", ".edit", function () {
     let user = $(this).data("user");
 
     $('#idInput').val(user.id).hide();
-    $('#usernameInput').val(user.firstName);
-    $('#lastnameInput').val(user.lastName);
+    $('#firstNameInput').val(user.firstName);
+    $('#lastNameInput').val(user.lastName);
+    $('#userNameInput').val(user.userName);
     $('#emailInput').val(user.email);
     $('#passwordInput').val(null);
     $('#roleInput').val(user.role);
@@ -87,6 +89,7 @@ $('.addUser').click(function () {
     $('#id').val(user.id).val(0).hide();
     $('#firstName').val('');
     $('#lastName').val('');
+    $('#userName').val('');
     $('#email').val('');
     $('#password').val('');
     $('#role').val('');
@@ -126,6 +129,7 @@ function getUser() {
                         $('<td>').append($('<span>')).text(user.id),
                         $('<td>').append($('<span>')).text(user.firstName),
                         $('<td>').append($('<span>')).text(user.lastName),
+                        $('<td>').append($('<span>')).text(user.userName),
                         $('<td>').append($('<span>')).text(user.email),
                         $('<td>').append($('<span>')).text(user.role),
                     )

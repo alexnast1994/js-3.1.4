@@ -23,9 +23,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public void add(User user) {
         if (user.getRole().contains("ROLE_USER") && !user.getRole().contains("ROLE_ADMIN")) {
-            user.setRoles(Collections.singleton(new Role(1L, "ROLE_USER")));
+            user.setRoles(Collections.singleton(new Role(2L, "ROLE_USER")));
         } else {
-            user.setRoles(Collections.singleton(new Role(2L, "ROLE_ADMIN")));
+            user.setRoles(Collections.singleton(new Role(1L, "ROLE_ADMIN")));
         }
         userDao.add(user);
     }

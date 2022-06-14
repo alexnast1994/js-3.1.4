@@ -37,10 +37,10 @@ public class User implements Serializable, UserDetails {
     private String role;
 
     @Fetch(FetchMode.JOIN)
-    @ManyToMany(cascade = CascadeType.MERGE)
+    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
     @JoinTable(name = "user_role",
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
+            inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)})
     @JsonIgnore
     private Set<Role> roles = new HashSet<>();
 
@@ -55,10 +55,13 @@ public class User implements Serializable, UserDetails {
         this.role = role;
     }
 
-    public User(String firstName, String lastName, String email,String role) {
+    public User(String firstName, String lastName, String userName, Set<Role> roles,String email,String password, String role) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.userName = userName;
         this.email = email;
+        this.password = password;
+        this.roles = roles;
         this.role = role;
     }
 
