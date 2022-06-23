@@ -37,7 +37,7 @@ public class User implements Serializable, UserDetails {
     private String role;
 
     @Fetch(FetchMode.JOIN)
-    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
+    @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "user_role",
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)})
@@ -94,7 +94,12 @@ public class User implements Serializable, UserDetails {
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        if (!email.contains("@")){
+            this.email = email + "@";
+        } else {
+            this.email = email;
+        }
+
     }
 
     public void setPassword(String password) {
